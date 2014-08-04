@@ -57,6 +57,11 @@ def main():
 
     window.resize(450, 450)
     window.grabKeyboard()
+
+    window.setStyleSheet("background:transparent;")
+    window.setAttribute(Qt.WA_TranslucentBackground)
+    window.setWindowFlags(Qt.FramelessWindowHint)
+
     window.show()
 
     app.exec_()
