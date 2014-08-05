@@ -14,46 +14,52 @@
 
 <script type="text/javascript">
 
-    var layer1 = document.getElementById("layer1");
-    var layer2 = document.getElementById("layer2");
-    var ctx1 = layer1.getContext('2d');
-    var ctx2 = layer2.getContext('2d');
-
     var outer = new Image();
-    outer.src = "outer.png";
     var inner = new Image();
-    inner.src = "inner.png";
 
     outer.onload = function() {
-        ctx1.drawImage(this, 0, 0);
+        document
+            .getElementById("layer1")
+            .getContext('2d')
+            .drawImage(this, 0, 0);
+
+        inner.src = "inner.png";
     }
 
     inner.onload = function() {
+
+        var ctx2 = document
+            .getElementById("layer2")
+            .getContext('2d');
+
         ctx2.translate(outer.width/2, outer.height/2);
         ctx2.drawImage(this,
                 -inner.width/2,
                 -inner.height/2
                 );
-    }
 
-    function rotate(angle) {
-        ctx2.rotate(angle*Math.PI/180)
-        ctx2.drawImage(inner,
-                    -inner.width/2,
-                    -inner.height/2
-                    );
-    }
-
-    document.onkeydown = function(e) {
-        switch (e.which) {
-            case 37: // key code for left arrow
-                rotate(-30);
-                break;
-            case 39: // key code for right arrow
-                rotate(30);
-                break;
+        function rotate(angle) {
+            ctx2.rotate(angle*Math.PI/180)
+            ctx2.drawImage(inner,
+                        -inner.width/2,
+                        -inner.height/2
+                        );
         }
-    };
+
+        document.onkeydown = function(e) {
+            switch (e.which) {
+                case 37: // key code for left arrow
+                    rotate(-30);
+                    break;
+                case 39: // key code for right arrow
+                    rotate(30);
+                    break;
+            }
+        };
+    }
+
+    outer.src = "outer.png";
+
 </script>
 
 </body>
