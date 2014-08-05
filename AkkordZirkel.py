@@ -4,27 +4,38 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
+
 class Rotator(QDialog):
+
     def __init__(self, graphicsItem):
         QDialog.__init__(self)
         self.graphicsItem = graphicsItem
 
     def eventFilter(self, receiver, event):
-        if event.type() != QEvent.KeyPress:
-            return super().eventFilter(receiver, event)
+        if event.type() == QEvent.KeyPress:
+            key = QKeyEvent(event).key()
 
-        key = QKeyEvent(event).key()
+            if key == Qt.Key_Right:
+                self.rotate(30)
+                return True
+            if key == Qt.Key_Left:
+                self.rotate(-30)
+                return True
+            if key == Qt.Key_Q:
+                QApplication.exit()
+                return True
 
-        if key == Qt.Key_Right:
-            self.rotate(30)
-        elif key == Qt.Key_Left:
-            self.rotate(-30)
-        elif key == Qt.Key_Q:
-            QApplication.exit()
-        else:
-            return super().eventFilter(receiver, event)
+        if event.type() == QEvent.Wheel:
+            delta = QWheelEvent(event).angleDelta().y()
 
-        return True
+            if delta < 0:
+                self.rotate(30)
+                return True
+            if delta > 0:
+                self.rotate(-30)
+                return True
+
+        return super().eventFilter(receiver, event)
 
     def rotate(self, angle):
         graphicsItem = self.graphicsItem
